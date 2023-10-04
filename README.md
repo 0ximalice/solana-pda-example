@@ -10,12 +10,6 @@ Before you begin, ensure you have met the following requirements:
 - [Basic understanding of Rust programming language and Solana blockchain](https://www.rust-lang.org/learn/get-started)
 - [Anchor Framework](https://project-serum.github.io/anchor/getting-started/installation.html) - A Solana development framework for creating, testing, and deploying smart contracts.
 
-Ensure that you have installed the Anchor CLI by running:
-
-```bash
-cargo install --git https://github.com/project-serum/anchor anchor-cli --locked
-```
-
 ## Understanding the Example
 
 This example demonstrates how to create a PDA using the Anchor framework and interact with it using Typescript. The code consists of two main parts:
@@ -55,7 +49,7 @@ solana-test-validator
 5. In a new terminal window, run the following command to deploy the program:
 
 ```bash
-solana airdrop 100 HEuPzboYh8mHjDzDmCaHaev8rLcj5bNG8gQntmQ5AUYi --url localhost
+solana airdrop 100 {wallet} --url localhost
 anchor build
 anchor deploy --provider.cluster=localnet
 anchor run initialize
@@ -64,7 +58,7 @@ anchor run initialize
 6. You would see the following output:
 
 ```bash
-Using wallet: ...
+Using wallet: {wallet}
 Program ID: A83dYxXd3yZ3bJoKdu7rgb63tvP7WDVgi1dxDhCWcwK
 Your transaction signature: 5shn7JYNGhEe6kvxUTT3MMpF1sUMgWUJe7WZCprbdLfGt3RC5SZuRsxvy5n48vMx2ku2tyBXm5GwivD2CJ856bvN
     ✔ Is initialized (191ms)
@@ -80,4 +74,13 @@ solana transfer 4aaFxG7C7FpAuEKmV3DaBG2kbjg5PCGGAerHwmUTQEsN 2 --allow-unfunded-
 
 ```bash
 anchor run redeem
+```
+
+9. You would see the following output:
+
+```bash
+Using treasury address (PDA): 4aaFxG7C7FpAuEKmV3DaBG2kbjg5PCGGAerHwmUTQEsN
+Bump: 255
+Your transaction signature: 2MsZPv2UUcmb5GoR6X5Em2nTs8DeBfPMfXxgrwXPaqcLd6u1X4v2z9r9tPaBxRoc8pPm1GNpuaHvjorz4MBoGDiP
+    ✔ Is redeemed (154ms)
 ```
