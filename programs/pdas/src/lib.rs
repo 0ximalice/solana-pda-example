@@ -9,40 +9,52 @@ pub mod pdas {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        let (pda, nonce) = Pubkey::find_program_address(&[b"vault"], ctx.program_id);
-        msg!("found PDA: {:?}, nonce: {}", pda, nonce);
+        let (pda, bump) = Pubkey::find_program_address(
+            &[b"treasury", ctx.accounts.user.key.as_ref()],
+            ctx.program_id,
+        );
+        msg!(
+            "found PDA: {:?}, bump: {}, for {}",
+            pda,
+            bump,
+            ctx.accounts.user.key.to_string()
+        );
         Ok(())
     }
 
     pub fn redeem(ctx: Context<Redemption>, bump_seed: u8, lamports: u64) -> Result<()> {
         invoke_signed(
             &system_instruction::transfer(
-                ctx.accounts.vault.key,
-                ctx.accounts.recipient.key,
+                ctx.accounts.treasury.key,
+                ctx.accounts.user.key,
                 lamports,
             ),
             &[
-                ctx.accounts.vault.to_account_info(),
-                ctx.accounts.recipient.to_account_info(),
+                ctx.accounts.treasury.to_account_info(),
+                ctx.accounts.user.to_account_info(),
                 ctx.accounts.system_program.to_account_info(),
             ],
-            &[&[b"vault", &[bump_seed]]],
+            &[&[b"treasury", ctx.accounts.user.key.as_ref(), &[bump_seed]]],
         )?;
         Ok(())
     }
 }
 
 #[derive(Accounts)]
-pub struct Initialize {}
+pub struct Initialize<'info> {
+    /// CHECK: user account
+    #[account(mut)]
+    pub user: AccountInfo<'info>,
+}
 
 #[derive(Accounts)]
 #[instruction(bump_seed: u8, lamports: u64)]
 pub struct Redemption<'info> {
-    /// CHECK: The vault account.
+    /// CHECK: the user treasury account
     #[account(mut)]
-    pub vault: AccountInfo<'info>,
-    /// CHECK: just a recipient account.
+    pub treasury: AccountInfo<'info>,
+    /// CHECK: just a user account
     #[account(mut)]
-    pub recipient: AccountInfo<'info>,
+    pub user: AccountInfo<'info>,
     pub system_program: Program<'info, System>,
 }
