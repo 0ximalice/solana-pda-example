@@ -44,6 +44,7 @@ cargo install --git https://github.com/project-serum/anchor anchor-cli --locked
 
 ```bash
 solana-test-validator
+solana config set --url localhost
 ```
 
 5. In a new terminal window, run the following command to deploy the program:
@@ -51,7 +52,7 @@ solana-test-validator
 ```bash
 solana airdrop 100 {wallet} --url localhost
 anchor build
-anchor deploy --provider.cluster=localnet
+anchor deploy
 anchor run initialize
 ```
 
@@ -67,7 +68,7 @@ Your transaction signature: 5shn7JYNGhEe6kvxUTT3MMpF1sUMgWUJe7WZCprbdLfGt3RC5SZu
 7. Transfer 2 SOL to the PDA address:
 
 ```bash
-solana transfer 4aaFxG7C7FpAuEKmV3DaBG2kbjg5PCGGAerHwmUTQEsN 2 --allow-unfunded-recipient --url localhost
+solana transfer 4aaFxG7C7FpAuEKmV3DaBG2kbjg5PCGGAerHwmUTQEsN 2 --allow-unfunded-recipient
 ```
 
 8. Redeem the 1 SOL from the PDA address:
