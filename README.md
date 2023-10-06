@@ -25,7 +25,7 @@ Follow these steps to get the project up and running:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/solana-pda-example.git
+git clone https://github.com/imalic3/solana-pda-example.git
 cd solana-pda-example
 ```
 
@@ -33,11 +33,13 @@ cd solana-pda-example
 
 ```bash
 # Install Solana CLI tools (if you haven't already)
-sh -c "$(curl -fsSL https://release.solana.com/v1.8.1/install)"
-cargo install solana-program
+sh -c "$(curl -fsSL https://release.solana.com/v1.16.3/install)"
 
 # Install Anchor CLI (if you haven't already)
 cargo install --git https://github.com/project-serum/anchor anchor-cli --locked
+
+# Install TypeScript dependencies
+yarn
 ```
 
 4. Start a local Solana cluster:
@@ -47,10 +49,17 @@ solana-test-validator
 solana config set --url localhost
 ```
 
-5. In a new terminal window, run the following command to deploy the program:
+5. In a new terminal window, run the following command to prepare account:
 
 ```bash
-solana airdrop 100 {wallet} --url localhost
+solana-keygen new -o ~/.config/solana/id.json
+solana address
+solana airdrop 100 {wallet}
+```
+
+5. Run the following command to deploy the program:
+
+```bash
 anchor build
 anchor deploy
 anchor run initialize
